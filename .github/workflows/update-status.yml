@@ -1,0 +1,24 @@
+name: Auto Update Status
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Write current time to status.txt
+        run: |
+          echo "Last update: $(date -u)" > status.txt
+          echo "Status: GitHub Actions is running automatically" >> status.txt
+
+      - name: Upload status file
+        uses: actions/upload-artifact@v4
+        with:
+          name: status-file
+          path: status.txt
