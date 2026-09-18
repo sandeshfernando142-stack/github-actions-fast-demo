@@ -14,7 +14,7 @@ jobs:
 
       - name: Write current time to status.txt
         run: |
-          echo "Last update: $(date -u)" > status.txt
+          echo "Last update: $(TZ=Asia/Colombo date)" > status.txt
           echo "Status: GitHub Actions is running automatically" >> status.txt
 
       - name: Upload status file
