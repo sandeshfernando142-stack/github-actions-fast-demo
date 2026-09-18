@@ -8,6 +8,10 @@ on:
 jobs:
   update:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,8 +21,11 @@ jobs:
           echo "Last update: $(TZ=Asia/Colombo date)" > status.txt
           echo "Status: GitHub Actions is running automatically" >> status.txt
 
-      - name: Upload status file
-        uses: actions/upload-artifact@v4
-        with:
-          name: status-file
-          path: status.txt
+      - name: Commit and push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add status.txt
+          git commit -m "Auto update status" || echo "No changes to commit"
+          git push
